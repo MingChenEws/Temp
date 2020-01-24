@@ -1,0 +1,72 @@
+https://stash.ews.int/projects/AUT/repos/securekey-infra/browse/ansible
+ansible\env\ewsref\group_vars\all
+
+
+Change: we creating org7 DLBP
+
+1) app_urls.yml
+
+look for " #DLBPS"
+Append org7 at the end 
+ - "{{ fabric_url_prefix }}-org6-dlbp-mybank.{{ fabric_env_domain }}"  ---> existing
+ - "{{ fabric_url_prefix }}-org7-dlbp-mybank.{{ fabric_env_domain }}"  --->New
+
+2) enviroment.yml
+
+Template:
+   a. replace PeerOrg4 to PeerOrg7 and org4 to org7.
+   b. port change 20031, 20032, 20033 and 20034  
+      -> if last port is 20051, then change 20061
+       replace 20031, 20032, 20033 and 20034  
+               20061, 20062, 20063 and 20064  
+
+look for "peerorgx:" start of the block  which space alignment
+
+
+  # peerorg4:
+  #   msp_id: PeerOrg4
+  #   vme_id: org4.vme.securekey.com
+  #   ca:
+  #     url1: https://{{ groups.nodes.0 }}:20031 <----------- Need to change
+  #     url2: https://{{ groups.nodes.2 }}:20031 <----------- Need to change
+  #     name: PeerOrg4CA
+  #     port: 20031
+  #     root_db_name: peerorg4_ca_root_db
+  #     root_db_user: peerorg4_ca_root_user
+  #     root_db_secret: "{{ environment_secret }}"
+  #     int_db_name: peerorg4_ca_int_db
+  #     int_db_user: peerorg4_ca_int_user
+  #     int_db_secret: "{{ environment_secret }}"
+  #     user: manager
+  #     secret: "{{ environment_secret }}"
+  #   tls_ca:
+  #     name: PeerOrg4TLSCA
+  #     root_db_name: peerorg4_tlsca_root_db
+  #     root_db_user: peerorg4_tlsca_root_user
+  #     root_db_secret: "{{ environment_secret }}"
+  #     int_db_name: peerorg4_tlsca_int_db
+  #     int_db_user: peerorg4_tlsca_int_user
+  #     int_db_secret: "{{ environment_secret }}"
+  #     user: manager
+  #     secret: "{{ environment_secret }}"
+  #   peer:
+  #     url1: "{{ groups.nodes.0 }}:20033" <----------- Need to change
+  #     url2: "{{ groups.nodes.2 }}:20033" <----------- Need to change
+  #     event_port: 20032 <----------- Need to change
+  #     port: 20033 <----------- Need to change
+  #   couchdb:
+  #     port: 20034<----------- Need to change
+  #   channel:
+  #     name: dlbp-org4
+
+
+
+3) copy folder ansible\env\ewsref\group_vars\peerorg3 to
+ansible\env\ewsref\group_vars\peerorg4
+  a. change file name C:\Users\snabulsi\Desktop\base\peerorg7\peerorg3.yaml
+     to C:\Users\snabulsi\Desktop\base\peerorg7\peerorg7.yaml
+  b. all reference to org3 to org7  
+     example 
+          "org_id: peerorg3" replace with "org_id: peerorg4"
+          "org_url_prefix: org4" replace with org_url_prefix: org7
+
